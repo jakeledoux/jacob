@@ -1,0 +1,22 @@
+[package]
+name = "jacob"
+description = "Jacob's Awesome Compiler Of BITS"
+version = "0.1.0"
+edition = "2021"
+authors = ["Jake Ledoux <contactjakeledoux@gmail.com>"]
+license = "MIT"
+license-file = "LICENSE"
+repository = "https://github.com/jakeledoux/jacob/"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bitreader = "0.3.4"
+itertools = "0.10.3"
+thiserror = "1.0.30"
+
+[[bin]]
+name = "jacob"
+path = "src/bin/jacob.rs"
+
+[features]
