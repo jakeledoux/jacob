@@ -24,7 +24,7 @@ This is an outline of what I'd like this crate to do. Pull-requests welcome!
 - Packet API
     - [ ] builder API
     - [X] evaluation
-    - [ ] in-place evaluation (transform into literal)
+    - [X] in-place evaluation (transform into literal)
     - [ ] simplification
 
 # Acronyms

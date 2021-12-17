@@ -38,7 +38,7 @@ enum LengthKind {
     PacketCount(usize),
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum Operation {
     Sum,
@@ -113,7 +113,7 @@ impl TryFrom<u8> for Operation {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum PacketKind {
     Literal(usize),
     Operator {
@@ -140,7 +140,7 @@ impl PacketKind {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Packet {
     pub version: u8,
     pub kind: PacketKind,
@@ -183,6 +183,13 @@ impl Packet {
                     }
                 }
             }
+        })
+    }
+
+    pub fn to_literal(&self) -> Result<Self, PacketError> {
+        Ok(Self {
+            version: self.version,
+            kind: PacketKind::Literal(self.eval()?),
         })
     }
 
@@ -363,6 +370,21 @@ mod tests {
         {
             let packet = Packet::try_from(packet).unwrap();
             assert_eq!(packet.eval().unwrap(), result);
+        }
+    }
+
+    #[test]
+    fn test_to_literal() {
+        for (&packet, result) in TEST_CASES
+            .iter()
+            .zip([3, 54, 7, 9, 1, 0, 0, 1, 246225449979])
+        {
+            let packet = Packet::try_from(packet).unwrap();
+            let expected_packet = Packet {
+                version: packet.version,
+                kind: PacketKind::Literal(result),
+            };
+            assert_eq!(packet.to_literal().unwrap(), expected_packet);
         }
     }
 
