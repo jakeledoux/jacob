@@ -188,7 +188,7 @@ pub struct Packet {
 }
 
 impl Packet {
-    /// Evaluates operator packets recursively
+    /// Evaluates operator packets recursively.
     ///
     /// # Errors
     ///
@@ -229,6 +229,11 @@ impl Packet {
         })
     }
 
+    /// Returns a literal packet with the evaluated value of `self`.
+    ///
+    /// # Errors
+    ///
+    /// Will return `Err` if evaluation fails.
     pub fn to_literal(&self) -> Result<Self, PacketError> {
         Ok(Self {
             version: self.version,
@@ -236,7 +241,7 @@ impl Packet {
         })
     }
 
-    /// Returns packet as byte array
+    /// Returns packet as byte array.
     ///
     /// # Errors
     ///
@@ -252,7 +257,7 @@ impl Packet {
         Ok(bytes)
     }
 
-    /// Returns hexadecimal representation of packet
+    /// Returns hexadecimal representation of packet.
     ///
     /// # Errors
     ///
@@ -261,7 +266,7 @@ impl Packet {
         Ok(hex_from_bytes(&self.to_bytes()?))
     }
 
-    /// Serializes packet as bits into writer
+    /// Serializes packet as bits into writer.
     ///
     /// # Errors
     ///
@@ -324,13 +329,13 @@ impl Packet {
         Ok(())
     }
 
-    /// Returns number of sub-packets contained within this packet, and its packets, recursively
+    /// Returns number of sub-packets contained within this packet, and its packets, recursively.
     #[must_use]
     pub fn packet_count(&self) -> usize {
         self.flat_packets().len() - 1
     }
 
-    /// Returns a flattened vec containing Self and its sub-packets
+    /// Returns a flattened vec containing Self and its sub-packets.
     #[must_use]
     pub fn flat_packets(&self) -> Vec<&Self> {
         match &self.kind {
@@ -343,11 +348,11 @@ impl Packet {
         }
     }
 
-    /// Renders to mathematical expression representation
+    /// Renders to mathematical expression representation.
     ///
     /// # Errors
     ///
-    /// Will return `Err` if packet does not evaluate properly
+    /// Will return `Err` if packet does not evaluate properly.
     pub fn to_expression(&self) -> Result<String, PacketError> {
         match &self.kind {
             PacketKind::Literal(value) => Ok(value.to_string()),
@@ -475,7 +480,7 @@ impl TryFrom<String> for Packet {
     }
 }
 
-/// Converts a hexadecimal string into a byte array
+/// Converts a hexadecimal string into a byte array.
 ///
 /// # Errors
 ///
@@ -489,7 +494,7 @@ pub fn bytes_from_hex(hex: &str) -> Result<Vec<u8>, PacketError> {
         .collect::<Result<Vec<_>, _>>()?)
 }
 
-/// Converts a byte array into a hexadecimal string
+/// Converts a byte array into a hexadecimal string.
 #[must_use]
 pub fn hex_from_bytes(bytes: &[u8]) -> String {
     bytes
