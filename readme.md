@@ -17,7 +17,7 @@ This is an outline of what I'd like this crate to do. Pull-requests welcome!
 
 - Hex packets
     - [X] decoding
-    - [ ] encoding
+    - [X] encoding
 - Math expressions
     - [ ] decoding
     - [X] encoding
