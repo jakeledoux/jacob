@@ -27,6 +27,9 @@ This is an outline of what I'd like this crate to do. Pull-requests welcome!
     - [X] in-place evaluation (transform into literal)
     - [ ] simplification
 - [ ] Command-line interface binary
+- Documentation
+    - [ ] Improve/complete documentation
+    - [ ] Add examples/
 
 # Acronyms
 
