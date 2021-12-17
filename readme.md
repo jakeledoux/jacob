@@ -11,6 +11,22 @@
 JACOB is a BITS compiler/decompiler/interpreter for the BITS instruction set.
 BITS was introduced as challenge 16 of the 2021's Advent of Code.
 
+# To-do
+
+This is an outline of what I'd like this crate to do. Pull-requests welcome!
+
+- Hex packets
+    - [X] decoding
+    - [ ] encoding
+- Math expressions
+    - [ ] decoding
+    - [X] encoding
+- Packet API
+    - [ ] builder API
+    - [X] evaluation
+    - [ ] in-place evaluation (transform into literal)
+    - [ ] simplification
+
 # Acronyms
 
 - **JACOB**: **J**acob's **A**wesome **C**ompiler **O**f **B**ITS
