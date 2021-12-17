@@ -143,7 +143,6 @@ impl PacketKind {
 #[derive(Clone, Debug)]
 pub struct Packet {
     pub version: u8,
-    pub length: u64,
     pub kind: PacketKind,
 }
 
@@ -254,10 +253,10 @@ impl Packet {
     }
 }
 
-impl<'a> TryFrom<BitReader<'a>> for Packet {
+impl<'a> TryFrom<&mut BitReader<'a>> for Packet {
     type Error = PacketError;
 
-    fn try_from(mut bit_reader: BitReader) -> Result<Self, Self::Error> {
+    fn try_from(bit_reader: &mut BitReader) -> Result<Self, Self::Error> {
         // VVV
         let version = bit_reader.read_u8(3)?;
         // TTT
@@ -294,9 +293,9 @@ impl<'a> TryFrom<BitReader<'a>> for Packet {
                         LengthKind::PacketCount(n_packets) => packets.len() < n_packets,
                     }
                 } {
-                    let reader = sub_packet_reader.relative_reader();
-                    let packet = Self::try_from(reader)?;
-                    sub_packet_reader.skip(packet.length)?;
+                    let mut reader = sub_packet_reader.relative_reader();
+                    let packet = Self::try_from(&mut reader)?;
+                    sub_packet_reader.skip(reader.position())?;
                     packets.push(packet);
                 }
                 bit_reader.skip(sub_packet_reader.position())?;
@@ -305,12 +304,7 @@ impl<'a> TryFrom<BitReader<'a>> for Packet {
             }
         };
 
-        let length = bit_reader.position();
-        Ok(Self {
-            version,
-            length,
-            kind,
-        })
+        Ok(Self { version, kind })
     }
 }
 
@@ -324,8 +318,8 @@ impl FromStr for Packet {
             .into_iter()
             .map(|mut chunk| u8::from_str_radix(&chunk.join(""), 16))
             .collect::<Result<Vec<_>, _>>()?;
-        let bit_reader = BitReader::new(&bytes);
-        Self::try_from(bit_reader)
+        let mut bit_reader = BitReader::new(&bytes);
+        Self::try_from(&mut bit_reader)
     }
 }
 
