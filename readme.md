@@ -22,11 +22,13 @@ This is an outline of what I'd like this crate to do. Pull-requests welcome!
     - [ ] decoding
     - [X] encoding
 - Packet API
+    - [ ] migrate parsing from bitreader to bitstream-io to minimize
+        dependencies
     - [ ] builder API
     - [X] evaluation
     - [X] in-place evaluation (transform into literal)
     - [ ] simplification
-- [ ] Command-line interface binary
+- [ ] Command-line interface binary *(in progress)*
 - Documentation
     - [ ] Improve/complete documentation
     - [ ] Add examples/
